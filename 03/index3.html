@@ -1,0 +1,173 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      html, body { 
+        background-color:#000;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden !important;  
+      }
+    </style>
+    <script src="https://threejs.org/build/three.min.js" type="text/javascript"></script>
+    <script src="https://threejs.org/examples/js/controls/TrackballControls.js" type="text/javascript"></script>
+    <script>
+      window.onload = function() {
+
+        var shapeCount=0;
+        // Three.js code goes here
+        
+        scene = new THREE.Scene();
+
+        fov = 75;
+        ratio = window.innerWidth / window.innerHeight;
+        zNear = 1;
+        zFar = 10000;
+        // console.log(ratio);
+        camera = new THREE.PerspectiveCamera(fov, ratio, zNear, zFar);
+        camera.position.set( 0, 0, 100);
+
+        renderer = new THREE.WebGLRenderer();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild(renderer.domElement );
+
+        geometry = new THREE.PlaneGeometry( 10000, 10000 );	
+        material = new THREE.MeshBasicMaterial( {
+
+        visible: false
+        });
+
+        invisible_plane = new THREE.Mesh(geometry, material);
+        scene.add(invisible_plane);
+
+
+        // renderer.domElement.onclick = function( e ){
+
+        renderer.domElement.onmousemove = function( e ){
+          // console.log(mousemove);
+
+          var r = Math.floor(Math.random() * 6) + 1;
+          console.log (r);
+          shapeCount+=1;
+          console.log("shapeCount ",shapeCount);
+
+    //       function random_bg_color() {
+    //       var r = Math.floor(Math.random() * 256);
+    //       var g = Math.floor(Math.random() * 256);
+    //       var b = Math.floor(Math.random() * 256);
+    //       var bgColor = "rgb(" + r + "," + g + "," + b + ")";
+    //       console.log(bgColor);
+  
+    // // document.body.style.background = bgColor;
+    // }
+
+    //       random_bg_color();
+
+
+          // var hex = randomRGB();
+          // console.log("hex = ", hex);
+
+ 
+          
+            console.log('Yay! We clicked!');
+
+            pixel_coords = new THREE.Vector2( e.clientX, e.clientY );
+
+            console.log('Pixel coords', pixel_coords);
+
+            vp_coords = new THREE.Vector2( 
+                        ( pixel_coords.x / window.innerWidth ) * 2 - 1,  //X
+                        -( pixel_coords.y / window.innerHeight ) * 2 + 1) // Y
+
+            console.log('Viewport coords', vp_coords);
+
+            vp_coords_near = new THREE.Vector3( vp_coords.x, vp_coords.y, 0);
+
+            raycaster = new THREE.Raycaster();
+	
+            raycaster.setFromCamera(vp_coords_near, camera);
+
+            intersects = raycaster.intersectObject(invisible_plane);
+
+            console.log('Ray to plane', intersects[0].point )
+
+            p = intersects[0].point ;
+
+            if (r==1){
+              geometry = new THREE.BoxBufferGeometry(10, 10, 10);
+
+            }
+            else if (r==2){
+              geometry = new THREE.ConeBufferGeometry ( 10, 10);
+            }
+
+            else if (r==3){
+
+              geometry = new THREE.TorusKnotBufferGeometry( 5, 5, 5, 5 );
+
+            }
+
+            else if (r==4){
+              geometry = new THREE.SphereBufferGeometry( 10, 10, 10  );
+            }
+
+            else if (r==5){
+              geometry = new THREE.OctahedronBufferGeometry( 10 );
+            }
+
+            else if (r==6){
+              geometry = new THREE.RingGeometry( 1, 10, 50);
+              // geometry = new THREE.Color('rgb(255,255,255)');
+            }
+            //  geometry = new THREE.RingGeometry( 1,10,50);
+            // geometry = new THREE.ConeBufferGeometry ( p.x, p.y, p.y );
+            // geometry = new THREE.TorusKnotBufferGeometry( 10, 10, 10, 10 )
+        // material = new THREE.MeshStandardMaterial({color : 0#ffffff} );
+        // cube = new THREE.Mesh( geometry, material);
+        // scene.add(cube);
+
+        // geometry = new THREE.ConeBufferGeometry ( 15, 20 )
+        var randomColor ="#" + Math.floor(Math.random()*16777215).toString(16);
+
+        console.log("rrrrrrrrrrrrrrrrr = " , randomColor);
+        material = new THREE.MeshStandardMaterial({ color:  randomColor});
+        cube = new THREE.Mesh( geometry, material);
+        scene.add(cube);
+
+        
+
+            cube.position.set(p.x, p.y, p.z);
+          };
+
+        ambientLight = new THREE.AmbientLight( 0x404040 );
+        scene.add( ambientLight );
+
+        light = new THREE.DirectionalLight( 0xffffff, 5.0);
+        light.position.set( 10, 100, 10 );
+        scene.add(light);
+
+        
+
+        controls = new THREE.TrackballControls( camera, renderer.domElement );
+
+        animate();
+        
+      };
+
+      function animate() {
+
+        requestAnimationFrame( animate );
+
+        // console.log('check');
+
+        controls.update();
+
+        // and here...
+        renderer.render( scene, camera);
+
+      };
+    </script>
+  </head>
+  <body></body>
+</html>
