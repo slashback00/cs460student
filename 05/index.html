@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+		<title>CS460 Assignment 05</title>
+		<style>
+			html, body {
+				background-color: #000;
+				margin: 0;
+				padding: 0;
+				height: 100%;
+				overflow: hidden !important;
+			}
+			#r1, #r2 {
+				width: 50%;
+				height: 100%;
+				float: left;
+			}
+		</style>
+		<!-- XTK -->
+		<script type="text/javascript" src="https://get.goXTK.com/xtk_edge.js"></script>
+		<script type="text/javascript" src="https://get.goXTK.com/xtk_xdat.gui.js"></script>
+		<!-- Three.js -->
+    <script src="https://threejs.org/build/three.min.js" type="text/javascript"></script>
+    <script src="https://threejs.org/examples/js/controls/TrackballControls.js" type="text/javascript"></script>
+		<!-- Assignment Work -->
+		<script type="text/javascript" src="./index.js"></script>
+		<script>
+			window.onload = () => {
+				let r1 = document.getElementById('r1');
+				let r2 = document.getElementById('r2');
+
+				// a05start() is defined in index.js
+				a05start(r1, r2);
+			};
+		</script>
+	</head>
+	<body>
+		<div id="r1"></div>
+		<div id="r2"></div>
+		<script src="ass5.js" async defer></script>
+	</body>
+</html>
